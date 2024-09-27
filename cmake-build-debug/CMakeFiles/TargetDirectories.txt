@@ -1,0 +1,3 @@
+/Users/anastasia_d/CLionProjects/Shapes-blackboard/cmake-build-debug/CMakeFiles/Shapes_blackboard.dir
+/Users/anastasia_d/CLionProjects/Shapes-blackboard/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/anastasia_d/CLionProjects/Shapes-blackboard/cmake-build-debug/CMakeFiles/rebuild_cache.dir
