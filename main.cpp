@@ -28,6 +28,31 @@ struct Board {  // Here I used a part of the code from assignment example
     }
 };
 
+
+class Figure : public Board {
+public:
+    virtual void draw() = 0;
+
+};
+
+class Triangle : public Figure {
+
+
+};
+
+class Rectangle : public Figure {
+
+};
+
+class Circle : public Figure {
+
+};
+
+class Square : public Figure {
+
+};
+
+
 int main() {
     Board board;
     board.print();
