@@ -167,6 +167,29 @@ public:
 
 };
 
+class Line : public Figure {
+public:
+    void draw(Board &board, string input) override {
+        int pos = input.find(' ');
+        int xStart = stoi(input.substr(0, pos));
+        string remaining = input.substr(pos + 1);
+        pos = remaining.find(' ');
+        int yStart = stoi(remaining.substr(0, pos));
+        remaining = remaining.substr(pos + 1);
+        pos = remaining.find(' ');
+        int xEnd = stoi(remaining.substr(0, pos));
+        int yEnd = stoi(remaining.substr(pos + 1));
+
+        for (int i = 0; i < max(abs(xEnd - xStart), abs(yEnd - yStart)); i++) {
+            int x = xStart + ((xEnd - xStart) * i) / max(abs(xEnd - xStart), abs(yEnd - yStart));
+            int y = yStart + ((yEnd - yStart) * i) / max(abs(xEnd - xStart), abs(yEnd - yStart));
+            if (x >= 0 && x < BOARD_WIDTH && y >= 0 && y < BOARD_HEIGHT) {
+                board.grid[y][x] = '*';
+            }
+        }
+    }
+
+};
 
 int main() {
     Board board;
@@ -176,8 +199,10 @@ int main() {
     //rectangle.draw(board, "10 4 5 4");
     //Circle circle;
     //circle.draw(board, "25 25 3");
-    Square square;
-    square.draw(board, "10 4 5");
+    // Square square;
+    // square.draw(board, "10 4 5");
+    Line line;
+    line.draw(board, "25 10 28 15");
 
     board.print();
     return 0;
