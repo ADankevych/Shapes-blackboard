@@ -29,15 +29,15 @@ struct Board {  // Here I used a part of the code from assignment example
 };
 
 
-class Figure : public Board {
+class Figure {
 public:
-    virtual void draw(string input) = 0;
+    virtual void draw(Board &board, string input) = 0;
 
 };
 
 class Triangle : public Figure {
 public:
-    void draw(string input) override {
+    void draw(Board &board, string input) override {
         int pos = input.find(' ');
         int x = stoi(input.substr(0, pos));
         string remaining = input.substr(pos + 1);
@@ -59,10 +59,10 @@ public:
 
             if (posY < BOARD_HEIGHT) {
                 if (leftMost >= 0 && leftMost < BOARD_WIDTH) {
-                    grid[posY][leftMost] = '*';
+                    board.grid[posY][leftMost] = '*';
                 }
                 if (rightMost >= 0 && rightMost < BOARD_WIDTH && leftMost != rightMost) {
-                    grid[posY][rightMost] = '*';
+                    board.grid[posY][rightMost] = '*';
                 }
             }
         }
@@ -71,7 +71,7 @@ public:
             int baseY = y + height - 1;
 
             if (baseX >= 0 && baseX < BOARD_WIDTH && baseY < BOARD_HEIGHT) {
-                grid[baseY][baseX] = '*';
+                board.grid[baseY][baseX] = '*';
             }
         }
     }
@@ -80,7 +80,7 @@ public:
 
 class Rectangle : public Figure {
 public:
-    void draw(string input) override {
+    void draw(Board &board, string input) override {
         int pos = input.find(' ');
         int x = stoi(input.substr(0, pos));
         string remaining = input.substr(pos + 1);
@@ -101,11 +101,10 @@ public:
         for(int i = y; i < y + height; i++) {
             for(int j = x; j < x + width; j++) {
                 if(i == y || i == y + height - 1 || j == x || j == x + width - 1) {
-                    grid[i][j] = '*';
+                    board.grid[i][j] = '*';
                 }
             }
         }
-
 
     }
 };
@@ -122,10 +121,9 @@ class Square : public Figure {
 int main() {
     Board board;
     Triangle triangle;
-    triangle.draw("12 2 2");
+    triangle.draw(board,"12 4 3");
     Rectangle rectangle;
-    rectangle.draw("10 5 4 4");
-    rectangle.print();
-
+    rectangle.draw(board, "10 4 5 4");
+    board.print();
     return 0;
 }
