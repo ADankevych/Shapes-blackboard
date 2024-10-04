@@ -85,13 +85,13 @@ public:
         int x = stoi(input.substr(0, pos));
         string remaining = input.substr(pos + 1);
         pos = remaining.find(' ');
-        int y = stoi(remaining.substr(pos + 1));
+        int y = stoi(remaining.substr(0, pos));
         remaining = remaining.substr(pos + 1);
         pos = remaining.find(' ');
         int width = stoi(remaining.substr(0, pos));
         remaining = input.substr(pos + 1);
         pos = remaining.find(' ');
-        int height = stoi(remaining.substr(pos + 1));
+        int height = stoi(remaining.substr(0, pos));
 
         if (width <= 0 || height <= 0) {
             cout << "Invalid input" << endl;
@@ -110,6 +110,33 @@ public:
 };
 
 class Circle : public Figure {
+public:
+    void draw(Board &board, string input) override {
+        int pos = input.find(' ');
+        int x = stoi(input.substr(0, pos));
+        string remaining = input.substr(pos + 1);
+        pos = remaining.find(' ');
+        int y = stoi(remaining.substr(0, pos));
+        remaining = remaining.substr(pos + 1);
+        pos = remaining.find(' ');
+        int radius = stoi(remaining.substr(0, pos));
+
+        if (radius <= 0) {
+            cout << "Invalid input" << endl;
+            return;
+        }
+
+        for(int i = y - radius; i <= y + radius; i++) {
+            for(int j = x - radius; j <= x + radius; j++) {
+                if((i - y) * (i - y) + (j - x) * (j - x) <= radius * radius &&
+                        (i - y) * (i - y) + (j - x) * (j - x) >= (radius-0.5) * (radius-0.5) ) {
+                    if(i >= 0 && i < BOARD_HEIGHT && j >= 0 && j < BOARD_WIDTH) {
+                        board.grid[i][j] = '*';
+                    }
+                }
+            }
+        }
+    }
 
 };
 
@@ -120,10 +147,12 @@ class Square : public Figure {
 
 int main() {
     Board board;
-    Triangle triangle;
-    triangle.draw(board,"12 4 3");
-    Rectangle rectangle;
-    rectangle.draw(board, "10 4 5 4");
+    //Triangle triangle;
+    //triangle.draw(board,"12 4 3");
+    //Rectangle rectangle;
+    //rectangle.draw(board, "10 4 5 4");
+    Circle circle;
+    circle.draw(board, "25 25 3");
     board.print();
     return 0;
 }
