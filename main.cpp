@@ -79,7 +79,35 @@ public:
 };
 
 class Rectangle : public Figure {
+public:
+    void draw(string input) override {
+        int pos = input.find(' ');
+        int x = stoi(input.substr(0, pos));
+        string remaining = input.substr(pos + 1);
+        pos = remaining.find(' ');
+        int y = stoi(remaining.substr(pos + 1));
+        remaining = remaining.substr(pos + 1);
+        pos = remaining.find(' ');
+        int width = stoi(remaining.substr(0, pos));
+        remaining = input.substr(pos + 1);
+        pos = remaining.find(' ');
+        int height = stoi(remaining.substr(pos + 1));
 
+        if (width <= 0 || height <= 0) {
+            cout << "Invalid input" << endl;
+            return;
+        }
+
+        for(int i = y; i < y + height; i++) {
+            for(int j = x; j < x + width; j++) {
+                if(i == y || i == y + height - 1 || j == x || j == x + width - 1) {
+                    grid[i][j] = '*';
+                }
+            }
+        }
+
+
+    }
 };
 
 class Circle : public Figure {
@@ -94,7 +122,10 @@ class Square : public Figure {
 int main() {
     Board board;
     Triangle triangle;
-    triangle.draw("5 5 15");
-    triangle.print();
+    triangle.draw("12 2 2");
+    Rectangle rectangle;
+    rectangle.draw("10 5 4 4");
+    rectangle.print();
+
     return 0;
 }
