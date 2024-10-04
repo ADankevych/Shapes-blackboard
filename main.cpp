@@ -141,6 +141,29 @@ public:
 };
 
 class Square : public Figure {
+public:
+    void draw(Board &board, string input) override {
+        int pos = input.find(' ');
+        int x = stoi(input.substr(0, pos));
+        string remaining = input.substr(pos + 1);
+        pos = remaining.find(' ');
+        int y = stoi(remaining.substr(0, pos));
+        remaining = remaining.substr(pos + 1);
+        int length = stoi(remaining);
+
+        if (length <= 0) {
+            cout << "Invalid input" << endl;
+            return;
+        }
+
+        for(int i = y; i < y + length; i++) { // Maybe in future it will be realized with using Rectangle method draw
+            for(int j = x; j < x + length; j++) {
+                if(i == y || i == y + length - 1 || j == x || j == x + length - 1) {
+                    board.grid[i][j] = '*';
+                }
+            }
+        }
+    }
 
 };
 
@@ -151,8 +174,11 @@ int main() {
     //triangle.draw(board,"12 4 3");
     //Rectangle rectangle;
     //rectangle.draw(board, "10 4 5 4");
-    Circle circle;
-    circle.draw(board, "25 25 3");
+    //Circle circle;
+    //circle.draw(board, "25 25 3");
+    Square square;
+    square.draw(board, "10 4 5");
+
     board.print();
     return 0;
 }
