@@ -1,11 +1,15 @@
 #include <iostream>
 #include <vector>
+#include <map>
 using namespace std;
 
 const int BOARD_WIDTH = 90;
 const int BOARD_HEIGHT = 30;
 
 vector<vector<char>> grid(BOARD_HEIGHT, vector<char>(BOARD_WIDTH, ' '));
+
+map<int, string> allShapes;
+int currentID = 0;
 
 struct Board {
     void print() { // Here I used a part of the code from assignment example
@@ -36,6 +40,8 @@ public:
 class Triangle : public Figure {
 public:
     void draw(string input) override {
+        allShapes[currentID] = " triangle"+input;
+        currentID++;
         int pos = input.find(' ');
         int x = stoi(input.substr(0, pos));
         string remaining = input.substr(pos + 1);
@@ -79,6 +85,8 @@ public:
 class Rectangle : public Figure {
 public:
     void draw(string input) override {
+        allShapes[currentID] = " rectangle"+input;
+        currentID++;
         int pos = input.find(' ');
         int x = stoi(input.substr(0, pos));
         string remaining = input.substr(pos + 1);
@@ -110,6 +118,8 @@ public:
 class Circle : public Figure {
 public:
     void draw(string input) override {
+        allShapes[currentID] = " circle"+input;
+        currentID++;
         int pos = input.find(' ');
         int x = stoi(input.substr(0, pos));
         string remaining = input.substr(pos + 1);
@@ -141,6 +151,8 @@ public:
 class Square : public Figure {
 public:
     void draw(string input) override {
+        allShapes[currentID] = " square"+input;
+        currentID++;
         int pos = input.find(' ');
         int x = stoi(input.substr(0, pos));
         string remaining = input.substr(pos + 1);
@@ -168,6 +180,8 @@ public:
 class Line : public Figure {
 public:
     void draw(string input) override {
+        allShapes[currentID] = " line"+input;
+        currentID++;
         int pos = input.find(' ');
         int xStart = stoi(input.substr(0, pos));
         string remaining = input.substr(pos + 1);
@@ -227,6 +241,10 @@ int main() {
                  << "line - coordinates of start and end points\n";
         } else if (input == "clear") {
             board = Board();
+        } else if (input == "list") {
+            for (auto &shape: allShapes) {
+                cout << shape.first << shape.second << endl;
+            }
         } else if (input == "exit") {
             break;
         }
