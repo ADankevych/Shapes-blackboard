@@ -193,17 +193,42 @@ public:
 
 int main() {
     Board board;
-    //Triangle triangle;
-    //triangle.draw(board,"12 4 3");
-    //Rectangle rectangle;
-    //rectangle.draw(board, "10 4 5 4");
-    //Circle circle;
-    //circle.draw(board, "25 25 3");
+    // Triangle triangle;
+    // triangle.draw(board,"12 4 3");
+    // Rectangle rectangle;
+    // rectangle.draw(board, "10 4 5 4");
+    // Circle circle;
+    // circle.draw(board, "25 25 3");
     // Square square;
     // square.draw(board, "10 4 5");
-    Line line;
-    line.draw(board, "25 10 28 15");
+    // Line line;
+    // line.draw(board, "25 10 28 15");
 
-    board.print();
+    cout << "Hello, welcome to shapes blackboard! \n"
+         << "Enter one of the commands: \n"
+         << "draw - Draw blackboard to the console \n"
+         << "list - Print all added shapes with their IDs and parameters \n"
+         << "shapes - Print a list of all available shapes and parameters for add call \n"
+         << "add - Add shape to the blackboard \n"
+         << "undo - Remove the last added shape from the blackboard\n"
+         << "clear - Remove all shapes from blackboard\n"
+         << "save - Save the blackboard to the file\n"
+         << "load - Load a blackboard from the file\n";
+
+    string input;
+    getline(cin, input);
+    if (input == "draw") {
+        board.print();
+    } else if (input == "shapes") {
+        cout << "triangle - coordinates of the top(upper) point and height of the triangle\n"
+             << "rectangle - coordinates of the upper left point and width height\n"
+             << "circle - coordinates of the center and radius\n"
+             << "square - coordinates of the upper left point and side length\n"
+             << "line - coordinates of start and end points\n";
+    } else if (input == "clear") {
+        board = Board();
+    }
+
+    // board.print();
     return 0;
 }
