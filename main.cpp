@@ -7,9 +7,23 @@ const int BOARD_WIDTH = 90;
 const int BOARD_HEIGHT = 30;
 
 vector<vector<char>> grid(BOARD_HEIGHT, vector<char>(BOARD_WIDTH, ' '));
-
+map<int, map<int, int>> countOfStars;
 map<int, string> allShapes;
 int currentID = 0;
+
+void DeleteOrCreate(int x, int y, int index) {
+    if (index == -1) {
+        countOfStars[x][y]--;
+        if (countOfStars[x][y] == 0) {
+            grid[x][y] = ' ';
+        }
+    } else {
+        countOfStars[x][y]++;
+        grid[x][y] = '*';
+
+    }
+}
+
 
 struct Board {
     void print() { // Here I used a part of the code from assignment example
@@ -33,13 +47,13 @@ struct Board {
 
 class Figure {
 public:
-    virtual void draw(string input) = 0;
+    virtual void draw(string input, int index) = 0;
 
 };
 
 class Triangle : public Figure {
 public:
-    void draw(string input) override {
+    void draw(string input, int deleteOrCreate) override {
         allShapes[currentID] = " triangle"+input;
         currentID++;
         int pos = input.find(' ');
@@ -63,10 +77,10 @@ public:
 
             if (posY < BOARD_HEIGHT) {
                 if (leftMost >= 0 && leftMost < BOARD_WIDTH) {
-                    grid[posY][leftMost] = '*';
+                    DeleteOrCreate(posY, leftMost, deleteOrCreate);
                 }
                 if (rightMost >= 0 && rightMost < BOARD_WIDTH && leftMost != rightMost) {
-                    grid[posY][rightMost] = '*';
+                    DeleteOrCreate(posY, rightMost, deleteOrCreate);
                 }
             }
         }
@@ -75,7 +89,7 @@ public:
             int baseY = y + height - 1;
 
             if (baseX >= 0 && baseX < BOARD_WIDTH && baseY < BOARD_HEIGHT) {
-                grid[baseY][baseX] = '*';
+                DeleteOrCreate(baseY, baseX, deleteOrCreate);
             }
         }
     }
@@ -84,7 +98,7 @@ public:
 
 class Rectangle : public Figure {
 public:
-    void draw(string input) override {
+    void draw(string input, int deleteOrCreate) override {
         allShapes[currentID] = " rectangle"+input;
         currentID++;
         int pos = input.find(' ');
@@ -107,7 +121,7 @@ public:
         for(int i = y; i < y + height; i++) {
             for(int j = x; j < x + width; j++) {
                 if(i == y || i == y + height - 1 || j == x || j == x + width - 1) {
-                    grid[i][j] = '*';
+                    DeleteOrCreate(i, j, deleteOrCreate);
                 }
             }
         }
@@ -117,7 +131,7 @@ public:
 
 class Circle : public Figure {
 public:
-    void draw(string input) override {
+    void draw(string input, int deleteOrCreate) override {
         allShapes[currentID] = " circle"+input;
         currentID++;
         int pos = input.find(' ');
@@ -139,7 +153,7 @@ public:
                 if((i - y) * (i - y) + (j - x) * (j - x) <= radius * radius &&
                         (i - y) * (i - y) + (j - x) * (j - x) >= (radius-0.5) * (radius-0.5) ) {
                     if(i >= 0 && i < BOARD_HEIGHT && j >= 0 && j < BOARD_WIDTH) {
-                        grid[i][j] = '*';
+                        DeleteOrCreate(i, j, deleteOrCreate);
                     }
                 }
             }
@@ -150,7 +164,7 @@ public:
 
 class Square : public Figure {
 public:
-    void draw(string input) override {
+    void draw(string input, int deleteOrCreate) override {
         allShapes[currentID] = " square"+input;
         currentID++;
         int pos = input.find(' ');
@@ -169,7 +183,7 @@ public:
         for(int i = y; i < y + length; i++) { // Maybe in future it will be realized with using Rectangle method draw
             for(int j = x; j < x + length; j++) {
                 if(i == y || i == y + length - 1 || j == x || j == x + length - 1) {
-                    grid[i][j] = '*';
+                    DeleteOrCreate(i, j, deleteOrCreate);
                 }
             }
         }
@@ -179,7 +193,7 @@ public:
 
 class Line : public Figure {
 public:
-    void draw(string input) override {
+    void draw(string input, int deleteOrCreate) override {
         allShapes[currentID] = " line"+input;
         currentID++;
         int pos = input.find(' ');
@@ -196,12 +210,36 @@ public:
             int x = xStart + ((xEnd - xStart) * i) / max(abs(xEnd - xStart), abs(yEnd - yStart));
             int y = yStart + ((yEnd - yStart) * i) / max(abs(xEnd - xStart), abs(yEnd - yStart));
             if (x >= 0 && x < BOARD_WIDTH && y >= 0 && y < BOARD_HEIGHT) {
-                grid[y][x] = '*';
+                DeleteOrCreate(y, x, deleteOrCreate);
             }
         }
     }
 
 };
+
+
+void findShape(string info, int index) {
+    int pos = info.find(' ');
+    string shape = info.substr(0, pos);
+
+    if (shape == "triangle") {
+        Triangle triangle;
+        triangle.draw(info.substr(pos+1), index);
+    } else if (shape == "rectangle") {
+        Rectangle rectangle;
+        rectangle.draw(info.substr(pos+1), index);
+    } else if (shape == "circle") {
+        Circle circle;
+        circle.draw(info.substr(pos+1), index);
+    } else if (shape == "square") {
+        Square square;
+        square.draw(info.substr(pos+1), index);
+    } else if (shape == "line") {
+        Line line;
+        line.draw(info.substr(pos+1), index);
+    }
+}
+
 
 int main() {
     Board board;
@@ -245,6 +283,11 @@ int main() {
             for (auto &shape: allShapes) {
                 cout << shape.first << shape.second << endl;
             }
+        } else if (input == "undo") {
+            string shape = allShapes[currentID];
+            findShape(shape, -1);
+            allShapes.erase(currentID);
+            currentID -= 1;
         } else if (input == "exit") {
             break;
         }
