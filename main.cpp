@@ -9,7 +9,7 @@ const int BOARD_HEIGHT = 30;
 vector<vector<char>> grid(BOARD_HEIGHT, vector<char>(BOARD_WIDTH, ' '));
 map<int, map<int, int>> countOfStars;
 map<int, string> allShapes;
-int currentID = 0;
+int currentID = 1;
 
 void DeleteOrCreate(int x, int y, int index) {
     if (index == -1) {
@@ -54,7 +54,7 @@ public:
 class Triangle : public Figure {
 public:
     void draw(string input, int deleteOrCreate) override {
-        allShapes[currentID] = " triangle"+input;
+        allShapes[currentID] = " triangle "+input;
         currentID++;
         int pos = input.find(' ');
         int x = stoi(input.substr(0, pos));
@@ -99,7 +99,7 @@ public:
 class Rectangle : public Figure {
 public:
     void draw(string input, int deleteOrCreate) override {
-        allShapes[currentID] = " rectangle"+input;
+        allShapes[currentID] = " rectangle "+input;
         currentID++;
         int pos = input.find(' ');
         int x = stoi(input.substr(0, pos));
@@ -132,7 +132,7 @@ public:
 class Circle : public Figure {
 public:
     void draw(string input, int deleteOrCreate) override {
-        allShapes[currentID] = " circle"+input;
+        allShapes[currentID] = " circle "+input;
         currentID++;
         int pos = input.find(' ');
         int x = stoi(input.substr(0, pos));
@@ -165,7 +165,7 @@ public:
 class Square : public Figure {
 public:
     void draw(string input, int deleteOrCreate) override {
-        allShapes[currentID] = " square"+input;
+        allShapes[currentID] = " square "+input;
         currentID++;
         int pos = input.find(' ');
         int x = stoi(input.substr(0, pos));
@@ -194,7 +194,7 @@ public:
 class Line : public Figure {
 public:
     void draw(string input, int deleteOrCreate) override {
-        allShapes[currentID] = " line"+input;
+        allShapes[currentID] = " line "+input;
         currentID++;
         int pos = input.find(' ');
         int xStart = stoi(input.substr(0, pos));
@@ -243,17 +243,6 @@ void findShape(string info, int index) {
 
 int main() {
     Board board;
-    // Triangle triangle;
-    // triangle.draw("12 4 3");
-    // Rectangle rectangle;
-    // rectangle.draw("10 4 5 4");
-    // Circle circle;
-    // circle.draw("25 25 3");
-    // Square square;
-    // square.draw("10 4 5");
-    // Line line;
-    // line.draw("25 10 28 15");
-
     cout << "Hello, welcome to shapes blackboard! \n"
          << "Enter one of the commands: \n"
          << "draw - Draw blackboard to the console \n"
@@ -290,11 +279,16 @@ int main() {
             currentID -= 1;
         } else if (input == "exit") {
             break;
+        } else {
+            int pos = input.find(' ');
+            string command = input.substr(0, pos);
+            string info = input.substr(pos + 1);
+            if (command == "add") {
+                findShape(info, 1);
+            }
         }
 
         cout << endl;
     }
-
-    // board.print();
     return 0;
 }
