@@ -213,20 +213,27 @@ int main() {
          << "undo - Remove the last added shape from the blackboard\n"
          << "clear - Remove all shapes from blackboard\n"
          << "save - Save the blackboard to the file\n"
-         << "load - Load a blackboard from the file\n";
+         << "load - Load a blackboard from the file\n"
+         << "exit - Exit the program\n";
 
     string input;
-    getline(cin, input);
-    if (input == "draw") {
-        board.print();
-    } else if (input == "shapes") {
-        cout << "triangle - coordinates of the top(upper) point and height of the triangle\n"
-             << "rectangle - coordinates of the upper left point and width height\n"
-             << "circle - coordinates of the center and radius\n"
-             << "square - coordinates of the upper left point and side length\n"
-             << "line - coordinates of start and end points\n";
-    } else if (input == "clear") {
-        board = Board();
+    while (true) {
+        getline(cin, input);
+        if (input == "draw") {
+            board.print();
+        } else if (input == "shapes") {
+            cout << "triangle - coordinates of the top(upper) point and height of the triangle\n"
+                 << "rectangle - coordinates of the upper left point and width height\n"
+                 << "circle - coordinates of the center and radius\n"
+                 << "square - coordinates of the upper left point and side length\n"
+                 << "line - coordinates of start and end points\n";
+        } else if (input == "clear") {
+            board = Board();
+        } else if (input == "exit") {
+            break;
+        }
+
+        cout << endl;
     }
 
     // board.print();
