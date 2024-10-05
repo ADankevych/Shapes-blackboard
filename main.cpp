@@ -5,12 +5,10 @@ using namespace std;
 const int BOARD_WIDTH = 90;
 const int BOARD_HEIGHT = 30;
 
-struct Board {  // Here I used a part of the code from assignment example
-    vector<vector<char>> grid;
+vector<vector<char>> grid(BOARD_HEIGHT, vector<char>(BOARD_WIDTH, ' '));
 
-    Board() : grid(BOARD_HEIGHT, vector<char>(BOARD_WIDTH, ' ')) {}
-
-    void print() {
+struct Board {
+    void print() { // Here I used a part of the code from assignment example
         for (int i = 0; i < BOARD_WIDTH / 2; i++) {
             cout << " -";
         }
@@ -31,13 +29,13 @@ struct Board {  // Here I used a part of the code from assignment example
 
 class Figure {
 public:
-    virtual void draw(Board &board, string input) = 0;
+    virtual void draw(string input) = 0;
 
 };
 
 class Triangle : public Figure {
 public:
-    void draw(Board &board, string input) override {
+    void draw(string input) override {
         int pos = input.find(' ');
         int x = stoi(input.substr(0, pos));
         string remaining = input.substr(pos + 1);
@@ -59,10 +57,10 @@ public:
 
             if (posY < BOARD_HEIGHT) {
                 if (leftMost >= 0 && leftMost < BOARD_WIDTH) {
-                    board.grid[posY][leftMost] = '*';
+                    grid[posY][leftMost] = '*';
                 }
                 if (rightMost >= 0 && rightMost < BOARD_WIDTH && leftMost != rightMost) {
-                    board.grid[posY][rightMost] = '*';
+                    grid[posY][rightMost] = '*';
                 }
             }
         }
@@ -71,7 +69,7 @@ public:
             int baseY = y + height - 1;
 
             if (baseX >= 0 && baseX < BOARD_WIDTH && baseY < BOARD_HEIGHT) {
-                board.grid[baseY][baseX] = '*';
+                grid[baseY][baseX] = '*';
             }
         }
     }
@@ -80,7 +78,7 @@ public:
 
 class Rectangle : public Figure {
 public:
-    void draw(Board &board, string input) override {
+    void draw(string input) override {
         int pos = input.find(' ');
         int x = stoi(input.substr(0, pos));
         string remaining = input.substr(pos + 1);
@@ -101,7 +99,7 @@ public:
         for(int i = y; i < y + height; i++) {
             for(int j = x; j < x + width; j++) {
                 if(i == y || i == y + height - 1 || j == x || j == x + width - 1) {
-                    board.grid[i][j] = '*';
+                    grid[i][j] = '*';
                 }
             }
         }
@@ -111,7 +109,7 @@ public:
 
 class Circle : public Figure {
 public:
-    void draw(Board &board, string input) override {
+    void draw(string input) override {
         int pos = input.find(' ');
         int x = stoi(input.substr(0, pos));
         string remaining = input.substr(pos + 1);
@@ -131,7 +129,7 @@ public:
                 if((i - y) * (i - y) + (j - x) * (j - x) <= radius * radius &&
                         (i - y) * (i - y) + (j - x) * (j - x) >= (radius-0.5) * (radius-0.5) ) {
                     if(i >= 0 && i < BOARD_HEIGHT && j >= 0 && j < BOARD_WIDTH) {
-                        board.grid[i][j] = '*';
+                        grid[i][j] = '*';
                     }
                 }
             }
@@ -142,7 +140,7 @@ public:
 
 class Square : public Figure {
 public:
-    void draw(Board &board, string input) override {
+    void draw(string input) override {
         int pos = input.find(' ');
         int x = stoi(input.substr(0, pos));
         string remaining = input.substr(pos + 1);
@@ -159,7 +157,7 @@ public:
         for(int i = y; i < y + length; i++) { // Maybe in future it will be realized with using Rectangle method draw
             for(int j = x; j < x + length; j++) {
                 if(i == y || i == y + length - 1 || j == x || j == x + length - 1) {
-                    board.grid[i][j] = '*';
+                    grid[i][j] = '*';
                 }
             }
         }
@@ -169,7 +167,7 @@ public:
 
 class Line : public Figure {
 public:
-    void draw(Board &board, string input) override {
+    void draw(string input) override {
         int pos = input.find(' ');
         int xStart = stoi(input.substr(0, pos));
         string remaining = input.substr(pos + 1);
@@ -184,7 +182,7 @@ public:
             int x = xStart + ((xEnd - xStart) * i) / max(abs(xEnd - xStart), abs(yEnd - yStart));
             int y = yStart + ((yEnd - yStart) * i) / max(abs(xEnd - xStart), abs(yEnd - yStart));
             if (x >= 0 && x < BOARD_WIDTH && y >= 0 && y < BOARD_HEIGHT) {
-                board.grid[y][x] = '*';
+                grid[y][x] = '*';
             }
         }
     }
@@ -194,15 +192,15 @@ public:
 int main() {
     Board board;
     // Triangle triangle;
-    // triangle.draw(board,"12 4 3");
+    // triangle.draw("12 4 3");
     // Rectangle rectangle;
-    // rectangle.draw(board, "10 4 5 4");
+    // rectangle.draw("10 4 5 4");
     // Circle circle;
-    // circle.draw(board, "25 25 3");
+    // circle.draw("25 25 3");
     // Square square;
-    // square.draw(board, "10 4 5");
+    // square.draw("10 4 5");
     // Line line;
-    // line.draw(board, "25 10 28 15");
+    // line.draw("25 10 28 15");
 
     cout << "Hello, welcome to shapes blackboard! \n"
          << "Enter one of the commands: \n"
