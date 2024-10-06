@@ -25,6 +25,28 @@ void DeleteOrCreate(int x, int y, int index) {
 }
 
 
+void lineParser(string &input, int &x, int &y, int &z) {
+    int pos = input.find(' ');
+    x = stoi(input.substr(0, pos));
+    string remaining = input.substr(pos + 1);
+    pos = remaining.find(' ');
+    y = stoi(remaining.substr(0, pos));
+    z = stoi(remaining.substr(pos + 1));
+}
+
+void lineParserFourElements(string &input, int &x, int &y, int &z, int &a) {
+    int pos = input.find(' ');
+    x = stoi(input.substr(0, pos));
+    string remaining = input.substr(pos + 1);
+    pos = remaining.find(' ');
+    y = stoi(remaining.substr(0, pos));
+    remaining = remaining.substr(pos + 1);
+    pos = remaining.find(' ');
+    z = stoi(remaining.substr(0, pos));
+    a = stoi(remaining.substr(pos + 1));
+}
+
+
 struct Board {
     void print() { // Here I used a part of the code from assignment example
         for (int i = 0; i < BOARD_WIDTH / 2; i++) {
@@ -56,14 +78,9 @@ public:
     void draw(string input, int deleteOrCreate) override {
         allShapes[currentID] = " triangle "+input;
         currentID++;
-        int pos = input.find(' ');
-        int x = stoi(input.substr(0, pos));
-        string remaining = input.substr(pos + 1);
-        pos = remaining.find(' ');
-        int y = stoi(remaining.substr(pos + 1));
-        remaining = remaining.substr(pos + 1);
-        pos = remaining.find(' ');
-        int height = stoi(remaining.substr(0, pos));
+
+        int x, y, height;
+        lineParser(input, x, y, height);
 
         if (height <= 0) {
             cout << "Invalid input" << endl;
@@ -101,17 +118,9 @@ public:
     void draw(string input, int deleteOrCreate) override {
         allShapes[currentID] = " rectangle "+input;
         currentID++;
-        int pos = input.find(' ');
-        int x = stoi(input.substr(0, pos));
-        string remaining = input.substr(pos + 1);
-        pos = remaining.find(' ');
-        int y = stoi(remaining.substr(0, pos));
-        remaining = remaining.substr(pos + 1);
-        pos = remaining.find(' ');
-        int width = stoi(remaining.substr(0, pos));
-        remaining = input.substr(pos + 1);
-        pos = remaining.find(' ');
-        int height = stoi(remaining.substr(0, pos));
+
+        int x, y, width, height;
+        lineParserFourElements(input, x, y, width, height);
 
         if (width <= 0 || height <= 0) {
             cout << "Invalid input" << endl;
@@ -134,14 +143,9 @@ public:
     void draw(string input, int deleteOrCreate) override {
         allShapes[currentID] = " circle "+input;
         currentID++;
-        int pos = input.find(' ');
-        int x = stoi(input.substr(0, pos));
-        string remaining = input.substr(pos + 1);
-        pos = remaining.find(' ');
-        int y = stoi(remaining.substr(0, pos));
-        remaining = remaining.substr(pos + 1);
-        pos = remaining.find(' ');
-        int radius = stoi(remaining.substr(0, pos));
+
+        int x, y, radius;
+        lineParser(input, x, y, radius);
 
         if (radius <= 0) {
             cout << "Invalid input" << endl;
@@ -167,13 +171,9 @@ public:
     void draw(string input, int deleteOrCreate) override {
         allShapes[currentID] = " square "+input;
         currentID++;
-        int pos = input.find(' ');
-        int x = stoi(input.substr(0, pos));
-        string remaining = input.substr(pos + 1);
-        pos = remaining.find(' ');
-        int y = stoi(remaining.substr(0, pos));
-        remaining = remaining.substr(pos + 1);
-        int length = stoi(remaining);
+
+        int x, y, length;
+        lineParser(input, x, y, length);
 
         if (length <= 0) {
             cout << "Invalid input" << endl;
@@ -196,15 +196,9 @@ public:
     void draw(string input, int deleteOrCreate) override {
         allShapes[currentID] = " line "+input;
         currentID++;
-        int pos = input.find(' ');
-        int xStart = stoi(input.substr(0, pos));
-        string remaining = input.substr(pos + 1);
-        pos = remaining.find(' ');
-        int yStart = stoi(remaining.substr(0, pos));
-        remaining = remaining.substr(pos + 1);
-        pos = remaining.find(' ');
-        int xEnd = stoi(remaining.substr(0, pos));
-        int yEnd = stoi(remaining.substr(pos + 1));
+
+        int xStart, yStart, xEnd, yEnd;
+        lineParserFourElements(input, xStart, yStart, xEnd, yEnd);
 
         for (int i = 0; i < max(abs(xEnd - xStart), abs(yEnd - yStart)); i++) {
             int x = xStart + ((xEnd - xStart) * i) / max(abs(xEnd - xStart), abs(yEnd - yStart));
