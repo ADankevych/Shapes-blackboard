@@ -181,7 +181,7 @@ public:
             return;
         }
 
-        for(int i = y; i < y + length; i++) { // Maybe in future it will be realized with using Rectangle method draw
+        for(int i = y; i < y + length; i++) {
             for(int j = x; j < x + length; j++) {
                 if(i == y || i == y + length - 1 || j == x || j == x + length - 1) {
                     DeleteOrCreate(i, j, deleteOrCreate);
@@ -295,16 +295,21 @@ int main() {
                 }
                 file.close();
             } else if (command == "load") {
-                ifstream file(info);
-                string line;
-                int i = 0;
-                while (getline(file, line)) {
-                    for (int j = 0; j < line.size(); j++) {
-                        grid[i][j] = line[j];
+                try {
+                    ifstream file(info);
+                    string line;
+                    int i = 0;
+                    while (getline(file, line)) {
+                        for (int j = 0; j < line.size(); j++) {
+                            grid[i][j] = line[j];
+                        }
+                        i++;
                     }
-                    i++;
+                    file.close();
                 }
-                file.close();
+                catch (exception &e) {
+                    cout << "OMG, here is some problem 0_0" << endl;
+                }
             }
         }
 
