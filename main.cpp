@@ -276,7 +276,8 @@ int main() {
             shape = shape.substr(pos+1);
             findShape(shape, -1);
             allShapes.erase(currentID-1);
-            currentID -= 1;
+            allShapes.erase(currentID-2);
+            currentID -= 2;
         } else if (input == "exit") {
             break;
         } else {
