@@ -262,15 +262,20 @@ int main() {
                  << "square - coordinates of the upper left point and side length\n"
                  << "line - coordinates of start and end points\n";
         } else if (input == "clear") {
-            board = Board();
+            allShapes.clear();
+            countOfStars.clear();
+            currentID = 1;
+            grid = vector<vector<char>>(BOARD_HEIGHT, vector<char>(BOARD_WIDTH, ' '));
         } else if (input == "list") {
             for (auto &shape: allShapes) {
                 cout << shape.first << shape.second << endl;
             }
         } else if (input == "undo") {
-            string shape = allShapes[currentID];
+            string shape = allShapes[currentID-1];
+            int pos = shape.find(' ');
+            shape = shape.substr(pos+1);
             findShape(shape, -1);
-            allShapes.erase(currentID);
+            allShapes.erase(currentID-1);
             currentID -= 1;
         } else if (input == "exit") {
             break;
