@@ -289,6 +289,17 @@ int main() {
                     file << endl;
                 }
                 file.close();
+            } else if (command == "load") {
+                ifstream file(info);
+                string line;
+                int i = 0;
+                while (getline(file, line)) {
+                    for (int j = 0; j < line.size(); j++) {
+                        grid[i][j] = line[j];
+                    }
+                    i++;
+                }
+                file.close();
             }
         }
 
