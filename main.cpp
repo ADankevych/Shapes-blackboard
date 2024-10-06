@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <fstream>
 using namespace std;
 
 const int BOARD_WIDTH = 90;
@@ -279,6 +280,15 @@ int main() {
             string info = input.substr(pos + 1);
             if (command == "add") {
                 findShape(info, 1);
+            } else if (command == "save") {
+                ofstream file(info);
+                for (auto &chars: grid) {
+                    for (char c: chars) {
+                        file << c;
+                    }
+                    file << endl;
+                }
+                file.close();
             }
         }
 
